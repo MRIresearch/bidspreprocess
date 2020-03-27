@@ -1,5 +1,5 @@
 # bidspreprocess
-Docker image for converting DICOMS to BIDS that supports anatomical defacing. Uses PyDeface 2.0.0 (https://github.com/poldracklab/pydeface) and dcm2bids 2.1.4(https://github.com/cbedetti/Dcm2Bids/)
+Docker image for converting DICOMS to BIDS that supports anatomical defacing. Uses PyDeface 2.0.0 (https://github.com/poldracklab/pydeface) and dcm2bids 2.1.4 (https://github.com/cbedetti/Dcm2Bids/)
 
 # Usage of bidsconvert.py
 The current docker image can be pulled from the docker hub as follows. The image takes up about 14 Gb because of the dependency of pydeface on FSL.
@@ -17,23 +17,23 @@ Additionally a bids action file can also be passed using `--bidsaction` - this i
 This functionality is under construction and provides support for copy operations only at the moment. 
 
 ```
-docker run  --rm -v $PWD:/mnt                 \ 
-                  -v $PWD/DICOM:/dicom        \
-                  -v $PWD/nifti:/nifti        \
+docker run  --rm -v $PWD:/mnt                    \ 
+                  -v $PWD/DICOM:/dicom           \
+                  -v $PWD/nifti:/nifti           \
                   orbisys/bidspreprocess:0.1     \   
-                  python /src/bidsconvert.py  \ 
+                  python /src/bidsconvert.py     \ 
                   --subject 106 --session_label post --dicomdir /dicom --niftidir /nifti --bidsconfig /mnt/dcm2bids_config.json --bidsaction /mnt/dcm2bids_actions.json --overwrite True
 ```
 
 # Usage of dcm2bids and dcm2niix directly
-Alternatively users can ignore bidsconvert.py and directly call dcm2bids or dcm2niix directly within the container. Simply replace bidsconvert.py in the commad call above with the command you prefer instead.
+Alternatively users can ignore bidsconvert.py and directly call dcm2bids or dcm2niix within the container. Simply replace bidsconvert.py in the call above with the command you prefer instead.
 
 Example running dcm2bids help
 ```
 docker run  --rm -v $PWD:/mnt                 \
                   -v $PWD/DICOM:/dicom        \
                   -v $PWD/nifti:/nifti        \
-                  orbisys/bidspreprocess:0.1     \
+                  orbisys/bidspreprocess:0.1  \
                   dcm2bids --help
 ```
 
@@ -42,7 +42,7 @@ Example showing basic call to dcm2niix
 docker run  --rm -v $PWD:/mnt                 \
                   -v $PWD/DICOM:/dicom        \
                   -v $PWD/nifti:/nifti        \
-                  orbisys/bidspreprocess:0.1     \
+                  orbisys/bidspreprocess:0.1  \
                   dcm2niix
 ```
 # bidsaction file
@@ -78,13 +78,13 @@ and also copying anatomical files called `$SUB_$SES_T1w` to `$SUB_$SES_acq-nd_FL
 where `$SUB` and `$SES` are the implied subject and session of the BIDS file.
 
 # Defacing
-PyDeface (https://github.com/poldracklab/pydeface) is used to deface any anatomicals that are convered to BIDS. 
+PyDeface (https://github.com/poldracklab/pydeface) is used to deface any anatomicals that are converted to BIDS. 
 Currently the default output is created with the `_defaced` suffix. It is however also possible to call pydeface directly as follows
 
 ```
 docker run  --rm -v $PWD:/mnt                 \
                   -v $PWD/DICOM:/dicom        \
                   -v $PWD/nifti:/nifti        \
-                  orbisys/bidspreprocess:0.1     \
+                  orbisys/bidspreprocess:0.1  \
                   pydeface
 ```
